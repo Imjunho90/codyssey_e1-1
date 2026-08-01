@@ -4,7 +4,7 @@
 
 # 터미널 조작 로그 기록
 
-'''bash
+~~~bash
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % pwd
 /Users/junhojeon/codyssey/codyssey-1-1
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % ls -la
@@ -21,3 +21,4 @@ drwxr-xr-x  6 junhojeon  staff  192  8  1 16:50 ..
 test.txt	test_1.txt
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey % rm test.txt test_1.txt
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey % ls
+~~~
