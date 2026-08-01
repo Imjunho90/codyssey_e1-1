@@ -470,8 +470,7 @@ COPY site/ /usr/share/nginx/html/
 ~~~
 
 
-## 빌드
-###이미지 빌드
+### 이미지 빌드
 ~~~bash
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker build -t codyssey-custom:1.0 .
 
@@ -494,6 +493,14 @@ cd17fe37c32fb0e700b058332f8225d39324ebbd1d0a03c6e13ead86c3af86cf
 fefa58e69f4eea092d84b38451442606fac74582e19f5688dc8b5f29c0090a2c
 
 ~~~
+
+## 10. 포트 매핑 및 접속 증거
+
+8080
+![이미지1](img/포트매핑-접속.png)
+8081
+![이미지2](img/포트매핑1-접속.png)
+
 ## 10. 포트 매핑 결과 및 결과 확인
 
 ~~~bash
