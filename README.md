@@ -1,5 +1,24 @@
-내 컴퓨터에 개발자용 '작업실' 꾸미기
+# 프로젝트 개요
+이번 프로젝트에서 터미널 조작 로그 기록, 권한 실습 및 증거 기록, Docker 설치, 기본 운영 명령 수행, 컨테이너 실행, 커스텀 이미지 제작, 포트 매핑, 볼륨 영속성,바인딩 마운트 git/github 연동을 실습합니다.
 
+
+# 1) 실행 환경
+- OS: macOS 14.4.1 
+- Shell: zsh
+- Docker: 29.4
+- Git: 2.39.3
+- Python: 3.11.14
+  
+#  수행 체크리스트
+- [o] 터미널 기본 조작 및 폴더 구성
+- [o] 권한 변경 실습
+- [o] Docker 설치/점검
+- [o] hello-world 실행
+- [o] Dockerfile 빌드/실행
+- [o] 포트 매핑 접속(2회)
+- [o] 바인드 마운트 반영
+- [o] 볼륨 영속성
+- [o] Git 설정 + VSCode GitHub 연동
 
 
 # 1.터미널 조작 로그 기록
@@ -495,3 +514,26 @@ cd17fe37c32f   codyssey-custom:1.0   "/docker-entrypoint.…"   9 seconds ago   
 ### 접속증거
 
 ![이미지](img/github-vscode_linked.png)
+
+
+# 바인딩 마운트
+
+~~~bash
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker run -d -p 8080:80 -v ~/codyssey/codyssey-1-1/site:/usr/share/nginx/html --name web-bind codyssey-custom:1.0
+9d7bb35a14c55d706fc0a8af2b36eab67739a2cf4f2566ec812bf61f7ac3cf9a
+
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % curl http://localhost:8080
+<p>before</p>
+
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % echo '<p>bind mount reflected</p>' > site/index.html
+
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % cat site/index.html
+<p>bind mount reflected</p>
+
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % curl http://localhost:8080
+<p>bind mount reflected</p>
+~~~
+
+
+
+
