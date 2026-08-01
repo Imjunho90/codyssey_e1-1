@@ -514,7 +514,7 @@ fefa58e69f4eea092d84b38451442606fac74582e19f5688dc8b5f29c0090a2c
 8081
 ![이미지2](img/포트매핑1-접속.png)
 
-## 10. 포트 매핑 결과 및 결과 확인
+## 11. 포트 매핑 결과 및 결과 확인
 
 ~~~bash
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker ps
@@ -538,7 +538,7 @@ cd17fe37c32f   codyssey-custom:1.0   "/docker-entrypoint.…"   9 seconds ago   
 #위와 동일 내용
 ~~~
 
-## 11. Docker 볼륨 영속성 검증
+## 12. Docker 볼륨 영속성 검증
 
 ### 볼륨 생성 및 컨테이너 연결
 ~~~bash
@@ -597,7 +597,7 @@ vol-con
 root@2e3a0940b4ad:/# cat data/hello.txt
 volume persistence test
 ~~~
-## 12. 바인딩 마운트
+## 13. 바인딩 마운트
 
 ~~~bash
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker run -d -p 8080:80 -v ~/codyssey/codyssey-1-1/site:/usr/share/nginx/html --name web-bind codyssey-custom:1.0
@@ -614,7 +614,7 @@ volume persistence test
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % curl http://localhost:8080
 <p>bind mount reflected</p>
 ~~~
-## 13. Git 설정 및 GitHub 연동
+## 14. Git 설정 및 GitHub 연동
 ### Git 사용자 정보/기본 브랜치 설정
 
 ~~~bash
@@ -632,12 +632,11 @@ init.defaultbranch=main
 ![이미지](img/github-vscode_linked.png)
 
 
-## 14. 트러블 슈팅
+## 15. 트러블 슈팅
 ### 1. 볼륨 연결 후 파일이 조회되지 않음
-- 문제: 볼륨을 연결한 새 컨테이너에서 `cat /data/text.txt` 실행 시
-  `No such file or directory`. 앞선 컨테이너에서는 정상 조회되던 파일이다.
-- 원인 가설: 파일이 볼륨이 아닌 컨테이너 레이어에 쓰였거나,
-  다른 볼륨을 참조하고 있을 가능성.
+- 문제: 볼륨을 연결한 새 컨테이너에서 `cat /data/hello.txt` 실행 시
+  `No such file or directory`. 앞선 컨테이너에서는 정상 조회되던 파일이다
+- 원인 가설: 파일이 볼륨이 아닌 컨테이너 레이어에 쓰였거나 다른 볼륨을 참조하고 있을 가능성
 - 확인:
 
 ```bash
@@ -652,14 +651,7 @@ local     data            ← mydata 가 아닌 data 로 생성되어 있었음
 - 해결/대안: 볼륨을 정리하고 이름을 통일해 재검증. `docker volume create`
   직후 `docker volume ls`로 이름을 확인하는 절차를 추가.
 
-```bash
-docker volume create mydata
-mydata
-docker volume ls
-DRIVER    VOLUME NAME
-local     mydata
-```
-#
+
 
 ### 2. heredoc으로 HTML 작성 시 `event not found`
 
@@ -671,8 +663,8 @@ $ cat > site/index.html << 'EOF' <!DOCTYPE html> <html lang="ko"> ...
 zsh: event not found: DOCTYPE
 ```
 
-- 원인 가설: 에러 메시지가 `DOCTYPE`을 가리키는 것으로 보아, `<!DOCTYPE`의
-  `!` 문자를 쉘이 특수하게 해석하는 것으로 추정.
+- 원인 가설: 에러 메시지가 `DOCTYPE`을 가리키는 것으로 보아 `<!DOCTYPE`의
+  `!` 문자를 쉘이 특수하게 해석하는 것으로 추정
 - 확인:
   - zsh에서 `!`는 히스토리 확장 기호이며, `!D`는 "D로 시작하는 직전 명령을
     불러오기"로 해석된다. 해당 이력이 없어 `event not found`가 발생
@@ -681,7 +673,7 @@ zsh: event not found: DOCTYPE
     붙으면 이후 내용이 명령 인자로 처리되어 `!`가 쉘에 그대로 노출된다
 - 원인: 여러 줄 명령을 붙여넣는 과정에서 개행이 유실되어 heredoc이
   단일 명령 라인으로 해석됨.
-- 해결/대안: 한줄 한줄 작성.
+- 해결/대안: 한줄 한줄 작성
 
 
 
