@@ -490,6 +490,8 @@ nginx:alpine          4a73073bd557       94.1MB         26.9MB
 nginx:latest          5a88c9c45479        258MB         64.3MB    U   
 ubuntu:latest         3131b4cc82a7        178MB         44.4MB    U   
 ~~~
+
+
 ###실행
 
 ~~~bash
