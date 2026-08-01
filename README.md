@@ -344,6 +344,85 @@ CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT   MEM %     NET
 ~~~
 
 
+# 5. 컨테이너 실행 실습
+
+## hello-world 실행
+~~~bash
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker run hello-world
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (arm64v8)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 %
+~~~
+
+## Ubuntu 실행후 내부 명령어 실행
+~~~bash
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker run -it --name ub ubuntu
+root@ed8611b87f40:/# ls
+bin   dev  home  media  opt   root  sbin  sys  usr
+boot  etc  lib   mnt    proc  run   srv   tmp  var
+root@ed8611b87f40:/# echo 'hi'
+hi
+root@ed8611b87f40:/# whoami
+root
+root@ed8611b87f40:/# pwd
+/
+root@ed8611b87f40:/# exit
+exit
+~~~
+
+
+## attach와exec의 차이
+
+컨테이너를 실행하고 exec로 내부로 들어간후 나왔을때 컨테이너가 안죽이만 attach로 한 경우  eixt시에 컨테이너 죽습니다.
+~~~bash
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker start ub
+ub
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker ps
+CONTAINER ID   IMAGE     COMMAND       CREATED          STATUS         PORTS     NAMES
+ed8611b87f40   ubuntu    "/bin/bash"   25 minutes ago   Up 2 seconds             ub
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker exec -it ub bash
+root@ed8611b87f40:/# exit
+exit
+
+What's next:
+    Try Docker Debug for seamless, persistent debugging tools in any container or image → docker debug ub
+    Learn more at https://docs.docker.com/go/debug-cli/
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker ps
+CONTAINER ID   IMAGE     COMMAND       CREATED          STATUS          PORTS     NAMES
+ed8611b87f40   ubuntu    "/bin/bash"   25 minutes ago   Up 23 seconds             ub
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % 
+
+
+
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker attach ub
+root@ed8611b87f40:/# exit
+exit
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % 
+~~~
 
 
 
