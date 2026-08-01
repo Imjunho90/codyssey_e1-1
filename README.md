@@ -337,6 +337,8 @@ CONTAINER ID   IMAGE     COMMAND                   CREATED         STATUS       
 2026/08/01 08:43:53 [notice] 31#31: exit
 2026/08/01 08:43:53 [notice] 32#32: exiting
 2026/08/01 08:43:53 [notice] 32#32: exit
+
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker stats inspiring_sanderson
 CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT   MEM %     NET I/O   BLOCK I/O   PIDS
 34060bc4edb7   inspiring_sanderson   0.00%     0B / 0B             0.00%     0B / 0B   0B / 0B     0
 ~~~
