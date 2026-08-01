@@ -463,11 +463,18 @@ CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 FROM nginx:alpine
 LABEL maintainer="j**h*"
 LABEL description="Codyssey E1-1 custom nginx image"
-ENV APP_NAME=dev
 ENV APP_ENV=dev
 COPY site/ /usr/share/nginx/html/
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % 
 ~~~
+### 커스텀 포인트와 목적
+
+베이스 이미지: `nginx:alpine` 
+
+| 지시어 | 적용 내용 | 목적 |
+| --- | --- | --- |
+| `FROM` | `nginx:alpine` | 정적 웹 서버 최소 구성. alpine 기반이라 이미지 용량이 작음 |
+| `COPY` | `site/` → `/usr/share/nginx/html/` | nginx 기본 페이지를 과제용 정적 콘텐츠로 교체 |
 
 
 ### 이미지 빌드
@@ -493,6 +500,8 @@ cd17fe37c32fb0e700b058332f8225d39324ebbd1d0a03c6e13ead86c3af86cf
 fefa58e69f4eea092d84b38451442606fac74582e19f5688dc8b5f29c0090a2c
 
 ~~~
+
+
 
 ## 10. 포트 매핑 및 접속 증거
 
