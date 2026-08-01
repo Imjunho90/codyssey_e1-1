@@ -12,15 +12,15 @@
 - Python: 3.11.14
   
 ## 3. 수행 체크리스트
-- [o] 터미널 기본 조작 및 폴더 구성
-- [o] 권한 변경 실습
-- [o] Docker 설치/점검
-- [o] hello-world 실행
-- [o] Dockerfile 빌드/실행
-- [o] 포트 매핑 접속(2회)
-- [o] 바인드 마운트 반영
-- [o] 볼륨 영속성
-- [o] Git 설정 + VSCode GitHub 연동
+- [x] 터미널 기본 조작 및 폴더 구성
+- [x] 권한 변경 실습
+- [x] Docker 설치/점검
+- [x] hello-world 실행
+- [x] Dockerfile 빌드/실행
+- [x] 포트 매핑 접속(2회)
+- [x] 바인드 마운트 반영
+- [x] 볼륨 영속성
+- [x] Git 설정 + VSCode GitHub 연동
 
 
 ## 4. 터미널 조작 로그 기록
@@ -414,7 +414,7 @@ exit
 
 ### attach와exec의 차이
 
-컨테이너를 실행하고 exec로 내부로 들어간후 나왔을때 컨테이너가 안죽이만 attach로 한 경우  eixt시에 컨테이너 죽습니다.
+컨테이너를 실행하고 exec로 내부로 들어간후 나왔을때 컨테이너가 안죽지만 attach로 한 경우  eixt시에 컨테이너 죽습니다.
 ~~~bash
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker ps
 CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
@@ -492,7 +492,7 @@ ubuntu:latest         3131b4cc82a7        178MB         44.4MB    U
 ~~~
 
 
-###실행
+### 실행
 
 ~~~bash
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker run -d -p 8080:80 --name codyssey-custom-image codyssey-custom:1.0
@@ -625,7 +625,7 @@ volume persistence test
 
 init.defaultbranch=main
 user.name=j*******o
-user.email="g*******2@gmail.com"
+user.email=g*******2@gmail.com
 init.defaultbranch=main
 ~~~
 ### 접속증거
