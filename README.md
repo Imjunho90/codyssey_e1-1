@@ -489,6 +489,10 @@ ubuntu:latest         3131b4cc82a7        178MB         44.4MB    U
 ~~~bash
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker run -d -p 8080:80 --name codyssey-custom-image codyssey-custom:1.0
 cd17fe37c32fb0e700b058332f8225d39324ebbd1d0a03c6e13ead86c3af86cf
+
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker run -d -p 8081:80 --name codyssey-custom-8081 codyssey-custom:1.0
+fefa58e69f4eea092d84b38451442606fac74582e19f5688dc8b5f29c0090a2c
+
 ~~~
 ## 10. 포트 매핑 결과 및 결과 확인
 
@@ -510,15 +514,70 @@ cd17fe37c32f   codyssey-custom:1.0   "/docker-entrypoint.…"   9 seconds ago   
 </html>
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % 
 
-
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % curl http://localhost:8081
+#위와 동일 내용
 ~~~
 
-### 접속증거
+## 11. Docker 볼륨 영속성 검증
 
-![이미지](img/github-vscode_linked.png)
+### 볼륨 생성 및 컨테이너 연결
+~~~bash
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker volume create data 
+data
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker volume ls
+DRIVER    VOLUME NAME
+local     data
+
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker volume inspect data
+[
+    {
+        "CreatedAt": "2026-08-01T22:07:12+09:00",
+        "Driver": "local",
+        "Labels": null,
+        "Mountpoint": "/var/lib/docker/volumes/data/_data",
+        "Name": "data",
+        "Options": null,
+        "Scope": "local"
+    }
+]
 
 
-## 11. 바인딩 마운트
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker run -d --name vol-con -v data:/data ubuntu sleep infinity
+793a69841fc6080f4032971c9e2d912f74e3618607b596ee44afcb24d784c984
+
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker ps
+CONTAINER ID   IMAGE     COMMAND            CREATED              STATUS              PORTS     NAMES
+793a69841fc6   ubuntu    "sleep infinity"   About a minute ago   Up About a minute             vol-con
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker exec -it vol-con bash
+root@793a69841fc6:/# echo 'volume persistence test' >/data/hello.txt
+root@793a69841fc6:/# cat /data/hello.txt
+volume persistence test
+root@793a69841fc6:/# ls -l data
+total 4
+-rw-r--r-- 1 root root 24 Aug  1 13:11 hello.txt
+root@793a69841fc6:/# exit
+exit
+
+What's next:
+    Try Docker Debug for seamless, persistent debugging tools in any container or image → docker debug vol-con
+    Learn more at https://docs.docker.com/go/debug-cli/
+~~~
+
+
+### 삭제 전/후 데이터 확인
+
+~~~bash
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker rm -f vol-con
+vol-con
+
+
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker run -d --name vol-con2 -v data:/data ubuntu sleep infinity
+2e3a0940b4ad32da99186f8647b3587afab90c07a271b07469d3bf92d18247cf
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker exec -it vol-con2 bash
+root@2e3a0940b4ad:/# cat data/hello.txt
+volume persistence test
+~~~
+## 12. 바인딩 마운트
 
 ~~~bash
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker run -d -p 8080:80 -v ~/codyssey/codyssey-1-1/site:/usr/share/nginx/html --name web-bind codyssey-custom:1.0
@@ -535,8 +594,25 @@ cd17fe37c32f   codyssey-custom:1.0   "/docker-entrypoint.…"   9 seconds ago   
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % curl http://localhost:8080
 <p>bind mount reflected</p>
 ~~~
+## 13. Git 설정 및 GitHub 연동
+### Git 사용자 정보/기본 브랜치 설정
 
-## 트러블 슈팅
+~~~bash
+
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % git config --global user.name "j*******o"
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % git config --global user.email "g*******2@gmail.com"
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % git config --list
+
+init.defaultbranch=main
+user.name=j*******o
+user.email="g*******2@gmail.com"
+init.defaultbranch=main
+~~~
+### 접속증거
+![이미지](img/github-vscode_linked.png)
+
+
+## 14. 트러블 슈팅
 ### 1. 볼륨 연결 후 파일이 조회되지 않음
 - 문제: 볼륨을 연결한 새 컨테이너에서 `cat /data/text.txt` 실행 시
   `No such file or directory`. 앞선 컨테이너에서는 정상 조회되던 파일이다.
