@@ -1,3 +1,4 @@
+# 내 컴퓨터에 개발자용 '작업실' 꾸미기
 
 ## 1. 프로젝트 개요
 이번 프로젝트에서 터미널 조작 로그 기록, 권한 실습 및 증거 기록, Docker 설치, 기본 운영 명령 수행, 컨테이너 실행, 커스텀 이미지 제작, 포트 매핑, 볼륨 영속성,바인딩 마운트 git/github 연동을 실습합니다.
@@ -534,6 +535,60 @@ cd17fe37c32f   codyssey-custom:1.0   "/docker-entrypoint.…"   9 seconds ago   
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % curl http://localhost:8080
 <p>bind mount reflected</p>
 ~~~
+
+## 트러블 슈팅
+### 1. 볼륨 연결 후 파일이 조회되지 않음
+- 문제: 볼륨을 연결한 새 컨테이너에서 `cat /data/text.txt` 실행 시
+  `No such file or directory`. 앞선 컨테이너에서는 정상 조회되던 파일이다.
+- 원인 가설: 파일이 볼륨이 아닌 컨테이너 레이어에 쓰였거나,
+  다른 볼륨을 참조하고 있을 가능성.
+- 확인:
+
+```bash
+docker volume ls
+DRIVER    VOLUME NAME
+local     data            ← mydata 가 아닌 data 로 생성되어 있었음
+```
+
+- 원인: 볼륨 생성 시 이름이 `data`로 입력되었고, 이후 `-v mydata:/data`로
+  실행했다. Docker는 지정한 볼륨이 없으면 경고 없이 같은 이름의 빈 볼륨을
+  새로 생성하기 때문에, 컨테이너는 정상 실행되지만 내용은 비어 있었다.
+- 해결/대안: 볼륨을 정리하고 이름을 통일해 재검증. `docker volume create`
+  직후 `docker volume ls`로 이름을 확인하는 절차를 추가.
+
+```bash
+docker volume create mydata
+mydata
+docker volume ls
+DRIVER    VOLUME NAME
+local     mydata
+```
+#
+
+### 2. heredoc으로 HTML 작성 시 `event not found`
+
+- 문제: `cat > index.html << 'EOF'`로 HTML 파일을 작성하려 하자
+  `zsh: event not found: DOCTYPE` 에러가 발생하며 파일이 생성되지 않음.
+
+```bash
+$ cat > site/index.html << 'EOF' <!DOCTYPE html> <html lang="ko"> ...
+zsh: event not found: DOCTYPE
+```
+
+- 원인 가설: 에러 메시지가 `DOCTYPE`을 가리키는 것으로 보아, `<!DOCTYPE`의
+  `!` 문자를 쉘이 특수하게 해석하는 것으로 추정.
+- 확인:
+  - zsh에서 `!`는 히스토리 확장 기호이며, `!D`는 "D로 시작하는 직전 명령을
+    불러오기"로 해석된다. 해당 이력이 없어 `event not found`가 발생
+  - 더 근본적으로, 명령이 개행 없이 한 줄로 입력되어 heredoc이 성립하지
+    않았다. heredoc은 `<< 'EOF'` 뒤에 줄바꿈이 있어야 동작하며, 한 줄로
+    붙으면 이후 내용이 명령 인자로 처리되어 `!`가 쉘에 그대로 노출된다
+- 원인: 여러 줄 명령을 붙여넣는 과정에서 개행이 유실되어 heredoc이
+  단일 명령 라인으로 해석됨.
+- 해결/대안: 한줄 한줄 작성.
+
+
+
 
 
 
