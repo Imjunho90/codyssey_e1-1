@@ -1,15 +1,16 @@
-# 프로젝트 개요
+
+## 1. 프로젝트 개요
 이번 프로젝트에서 터미널 조작 로그 기록, 권한 실습 및 증거 기록, Docker 설치, 기본 운영 명령 수행, 컨테이너 실행, 커스텀 이미지 제작, 포트 매핑, 볼륨 영속성,바인딩 마운트 git/github 연동을 실습합니다.
 
 
-# 1) 실행 환경
+## 2. 실행 환경
 - OS: macOS 14.4.1 
 - Shell: zsh
 - Docker: 29.4
 - Git: 2.39.3
 - Python: 3.11.14
   
-#  수행 체크리스트
+## 3. 수행 체크리스트
 - [o] 터미널 기본 조작 및 폴더 구성
 - [o] 권한 변경 실습
 - [o] Docker 설치/점검
@@ -21,9 +22,9 @@
 - [o] Git 설정 + VSCode GitHub 연동
 
 
-# 1.터미널 조작 로그 기록
+## 4. 터미널 조작 로그 기록
 
-## 현재 위치 확인, 목록 확인(숨김 파일 포함)
+### 현재 위치 확인, 목록 확인(숨김 파일 포함)
 ~~~bash
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % pwd
 /Users/junhojeon/codyssey/codyssey-1-1
@@ -34,7 +35,7 @@ drwxr-xr-x  2 junhojeon  staff   64  8  1 16:50 .
 drwxr-xr-x  6 junhojeon  staff  192  8  1 16:50 ..
 ~~~
 
-## 이동, 생성, 복사
+### 이동, 생성, 복사
 ~~~bash
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % mkdir codyssey
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % touch test.txt
@@ -43,7 +44,7 @@ drwxr-xr-x  6 junhojeon  staff  192  8  1 16:50 ..
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey % cp ~/codyssey/codyssey-1-1/test.txt ~/codyssey/codyssey-1-1/codyssey
 ~~~
 
-## 이동/이름변경, 삭제
+### 이동/이름변경, 삭제
 ~~~bash
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey % cd codyssey-1-1
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % mv test.txt codyssey/test_1.txt
@@ -56,9 +57,9 @@ test.txt	test_1.txt
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey % 
 ~~~
 
-# 2. 권한 실습
+## 5. 권한 실습
 
-## 파일 권한 확인 및 변경
+### 파일 권한 확인 및 변경
 ~~~bash
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % touch test.txt
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % echo 'hello codyssey' > test.txt
@@ -99,9 +100,9 @@ d--x------  2 junhojeon  staff  64  8  1 17:24 test
 
 
 
-# 3.Docker 설치 및 기본점검
+## 6.Docker 설치 및 기본점검
 
-## 버전 및 동작여부 확인 결과
+### 버전 및 동작여부 확인 결과
 ~~~bash
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker --version
 Docker version 29.4.0, build 9d7ad9f
@@ -248,9 +249,9 @@ WARNING: DOCKER_INSECURE_NO_IPTABLES_RAW is set
 ~~~
 
 
-# 4.Docker 기본 운영 명령 수행
+## 7.Docker 기본 운영 명령 수행
 
-## Docker 이미지 다운로드/목록 확인 
+### Docker 이미지 다운로드/목록 확인 
 
 ~~~bash
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker pull hello-world
@@ -271,10 +272,10 @@ IMAGE                ID             DISK USAGE   CONTENT SIZE   EXTRA
 hello-world:latest   c3cbe1cc1aa5       18.5kB         10.3kB  
 ~~~
 
-## 컨테이너: 실행/중지/목록 확인
+### 컨테이너: 실행/중지/목록 확인
 
 
-##컨테이너 실행
+#### 컨테이너 실행
 ~~~bash
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker run -d nginx
 Unable to find image 'nginx:latest' locally
@@ -292,7 +293,7 @@ Digest: sha256:5a88c9c45479443d7be2eadc894b4ed0a9801bae03d97a5760ae13b5c2005942
 Status: Downloaded newer image for nginx:latest
 34060bc4edb73c1e0d0def88e3b042f22fbeaf92c1bd9650b7c66c049d29c942
 ~~~
-## 컨테이너 중지 및 목록확인
+#### 컨테이너 중지 및 목록확인
 ~~~bash
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker stop inspiring_sanderson
 inspiring_sanderson
@@ -305,7 +306,7 @@ CONTAINER ID   IMAGE     COMMAND                   CREATED         STATUS       
 
 ~~~
 
-## 로그 및 리소스 확인
+#### 로그 및 리소스 확인
 ~~~bash
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker logs inspiring_sanderson
 /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
@@ -363,9 +364,9 @@ CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT   MEM %     NET
 ~~~
 
 
-# 5. 컨테이너 실행 실습
+## 8. 컨테이너 실행 실습
 
-## hello-world 실행
+### hello-world 실행
 ~~~bash
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker run hello-world
 
@@ -393,7 +394,7 @@ For more examples and ideas, visit:
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 %
 ~~~
 
-## Ubuntu 실행후 내부 명령어 실행
+### Ubuntu 실행후 내부 명령어 실행
 ~~~bash
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker run -it --name ub ubuntu
 root@ed8611b87f40:/# ls
@@ -410,7 +411,7 @@ exit
 ~~~
 
 
-## attach와exec의 차이
+### attach와exec의 차이
 
 컨테이너를 실행하고 exec로 내부로 들어간후 나왔을때 컨테이너가 안죽이만 attach로 한 경우  eixt시에 컨테이너 죽습니다.
 ~~~bash
@@ -444,8 +445,8 @@ CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 ~~~
 
 
-# 기존 Dockerfile 기반 커스텀 이미지 제작
-## html과 Dockerfile 내용
+## 9. 기존 Dockerfile 기반 커스텀 이미지 제작
+### html과 Dockerfile 내용
 ~~~bash
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % cat site/index.html
 <!DOCTYPE html>
@@ -488,7 +489,7 @@ ubuntu:latest         3131b4cc82a7        178MB         44.4MB    U
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker run -d -p 8080:80 --name codyssey-custom-image codyssey-custom:1.0
 cd17fe37c32fb0e700b058332f8225d39324ebbd1d0a03c6e13ead86c3af86cf
 ~~~
-### 포트 매핑 결과 및 결과 확인
+## 10. 포트 매핑 결과 및 결과 확인
 
 ~~~bash
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker ps
@@ -516,7 +517,7 @@ cd17fe37c32f   codyssey-custom:1.0   "/docker-entrypoint.…"   9 seconds ago   
 ![이미지](img/github-vscode_linked.png)
 
 
-# 바인딩 마운트
+## 11. 바인딩 마운트
 
 ~~~bash
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker run -d -p 8080:80 -v ~/codyssey/codyssey-1-1/site:/usr/share/nginx/html --name web-bind codyssey-custom:1.0
