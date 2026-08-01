@@ -425,4 +425,71 @@ CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 ~~~
 
 
+# 기존 Dockerfile 기반 커스텀 이미지 제작
+## html과 Dockerfile 내용
+~~~bash
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % cat site/index.html
+<!DOCTYPE html>
+<html lang='ko'>
+<head><meta charset="utf-8"><title>Codyssey E1-1</title></head>
+<body>
+<h1>Codyssey 커스텀 실습</h1>
+<p>nginx:alpine 기반 /8080포트 웹 서버 베이스 이미지 활용 </p>
+</body>
+</html>
 
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % cat Dockerfile
+FROM nginx:alpine
+LABEL maintainer="j**h*"
+LABEL description="Codyssey E1-1 custom nginx image"
+ENV APP_NAME=dev
+ENV APP_ENV=dev
+COPY site/ /usr/share/nginx/html/
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % 
+~~~
+
+
+## 빌드
+###이미지 빌드
+~~~bash
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker build -t codyssey-custom:1.0 .
+
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker images 
+                                                           i Info →   U  In Use
+IMAGE                 ID             DISK USAGE   CONTENT SIZE   EXTRA
+codyssey-custom:1.0   f494a7ae8da2       93.2MB           26MB        
+hello-world:latest    c3cbe1cc1aa5       18.5kB         10.3kB    U   
+nginx:alpine          4a73073bd557       94.1MB         26.9MB        
+nginx:latest          5a88c9c45479        258MB         64.3MB    U   
+ubuntu:latest         3131b4cc82a7        178MB         44.4MB    U   
+~~~
+###실행
+
+~~~bash
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker run -d -p 8080:80 --name codyssey-custom-image codyssey-custom:1.0
+cd17fe37c32fb0e700b058332f8225d39324ebbd1d0a03c6e13ead86c3af86cf
+~~~
+### 포트 매핑 결과 및 결과 확인
+
+~~~bash
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker ps
+CONTAINER ID   IMAGE                 COMMAND                   CREATED         STATUS         PORTS                                     NAMES
+cd17fe37c32f   codyssey-custom:1.0   "/docker-entrypoint.…"   9 seconds ago   Up 8 seconds   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp   codyssey-custom-image
+
+
+
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % curl http://localhost:8080
+<!DOCTYPE html>
+<html lang='ko'>
+<head><meta charset="utf-8"><title>Codyssey E1-1</title></head>
+<body>
+<h1>Codyssey 커스텀 실습</h1>
+<p>nginx:alpine 기반 /8080포트 웹 서버 베이스 이미지 활용 </p>
+</body>
+</html>
+(base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % 
+
+
+~~~
+
+### 접속증거
