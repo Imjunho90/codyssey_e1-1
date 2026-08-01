@@ -493,3 +493,4 @@ cd17fe37c32f   codyssey-custom:1.0   "/docker-entrypoint.…"   9 seconds ago   
 ~~~
 
 ### 접속증거
+![이미지](img/포트매핑-접속.png)
