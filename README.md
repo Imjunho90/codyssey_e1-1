@@ -276,7 +276,7 @@ hello-world:latest   c3cbe1cc1aa5       18.5kB         10.3kB
 ### 컨테이너: 실행/중지/목록 확인
 
 
-#### 컨테이너 실행
+### 컨테이너 실행
 ~~~bash
 (base) junhojeon@Junhoui-MacBookAir-2 codyssey-1-1 % docker run -d nginx
 Unable to find image 'nginx:latest' locally
